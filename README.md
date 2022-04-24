@@ -1,2 +1,3 @@
-# COMP90088_Cryptocurrencies_and_decentralised_ledgers
+# cdl
+
 Solidity notes
