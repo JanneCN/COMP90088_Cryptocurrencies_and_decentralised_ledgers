@@ -17,9 +17,14 @@ contract Winner {
     mapping(address=>bool) _AllAccounts;
     mapping(address=>uint8) _AccountsActions;
     bool start; 
-    uint8  xiaomi;
-    uint8  xiaoming;
-    uint8  xiaogang;
+    // addresses of xiaomi xiaoming xiaogang
+    address addr_xiaomi;
+    address addr_xiaoming;
+    address addr_xiaogang;
+    // actions of xiaomi xiaoming xiaogang
+    uint8  act_xiaomi;
+    uint8  act_xiaoming;
+    uint8  act_xiaogang;
     
     // 这个是构造函数 在合约第一次创建时执行
     constructor() public {
@@ -28,17 +33,21 @@ contract Winner {
         _mapActions["hammer"] = 2;
         _mapActions["cloth"] = 3;
         
-        _AllAccounts[0x763418009b636593e86256ffa32bef1b0218a1e1] = true;  // xiaomi
-        _AllAccounts[0x14723a09acff6d2a60dcdf7aa4aff308fddc160c] = true; // xiaoming
-        _AllAccounts[0x583031d1113ad414f02576bd6afabfb302140225] = true; // xiaogang
+        addr_xiaomi   = 0x763418009b636593e86256ffa32bef1b0218a1e1
+        addr_xiaoming = 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c
+        addr_xiaogang = 0x583031d1113ad414f02576bd6afabfb302140225
+        // this is an exclusive game, only xiaomi xiaoming xiaogang can involve in
+        _AllAccounts[addr_xiaomi] = true;  
+        _AllAccounts[addr_xiaoming] = true;
+        _AllAccounts[addr_xiaogang] = true;
+        // actions of each validate account is 0 at the beginning
+        _AccountsActions[addr_xiaomi]   = 0;
+        _AccountsActions[addr_xiaoming] = 0;
+        _AccountsActions[addr_xiaogang] = 0;
 
-        uint8  xiaomi   = _AccountsActions[0x763418009b636593e86256ffa32bef1b0218a1e1];
-        uint8  xiaoming = _AccountsActions[0x14723a09acff6d2a60dcdf7aa4aff308fddc160c];
-        uint8  xiaogang = _AccountsActions[0x583031d1113ad414f02576bd6afabfb302140225];
-
-        xiaomi   = 0;
-        xiaoming = 0;
-        xiaogang = 0;
+        act_xiaomi   = _AccountsActions[addr_xiaomi];
+        act_xiaoming = _AccountsActions[addr_xiaoming];
+        act_xiaogang = _AccountsActions[addr_xiaogang];
         
         // _AccountsActions[0x763418009b636593e86256ffa32bef1b0218a1e1] = 0;
         // _AccountsActions[0x14723a09acff6d2a60dcdf7aa4aff308fddc160c] = 0;
@@ -49,7 +58,8 @@ contract Winner {
     // 并且要求只能是上述要求的三个以太坊地址
     function setAction( string action) public  returns (bool) {
         if (_mapActions[action] == 0 ) {
-            // TODO 这一行不会执行啊？？？ 有啥用？？？
+            // 当前玩家没有动作，游戏结束
+            // 只有所有玩家都有动作才可以进行之后的比较
             return false;
         }
         // The msg.sender is the address that has called or initiated a function or created a transaction. 
@@ -74,9 +84,9 @@ contract Winner {
         // _AccountsActions[0x763418009b636593e86256ffa32bef1b0218a1e1] = 0;
         // _AccountsActions[0x14723a09acff6d2a60dcdf7aa4aff308fddc160c] = 0;
         // _AccountsActions[0x583031d1113ad414f02576bd6afabfb302140225] = 0;
-        xiaomi   = 0;
-        xiaoming = 0;
-        xiaogang = 0;
+        act_xiaomi   = 0;
+        act_xiaoming = 0;
+        act_xiaogang = 0;
     }
     
     // The winner is one of xiaomi xiaoming xiaogang
@@ -85,9 +95,9 @@ contract Winner {
             // _AccountsActions[0x763418009b636593e86256ffa32bef1b0218a1e1] == 0 ||
             // _AccountsActions[0x14723a09acff6d2a60dcdf7aa4aff308fddc160c] == 0 ||
             // _AccountsActions[0x583031d1113ad414f02576bd6afabfb302140225] == 0
-            xiaomi   == 0 ||
-            xiaoming == 0 ||
-            xiaogang == 0
+            act_xiaomi   == 0 ||
+            act_xiaoming == 0 ||
+            act_xiaogang == 0
             ) {
                 // if one of the three didn't bid, reset the game state, end game return false
                 reset();
@@ -97,33 +107,33 @@ contract Winner {
         // uint8  xiaoming = _AccountsActions[0x14723a09acff6d2a60dcdf7aa4aff308fddc160c];
         // uint8  xiaogang = _AccountsActions[0x583031d1113ad414f02576bd6afabfb302140225];
         
-        if (xiaomi != xiaoming && xiaomi != xiaogang && xiaoming != xiaogang) {
+        if (act_xiaomi != act_xiaoming && act_xiaomi != act_xiaogang && act_xiaoming != act_xiaogang) {
             // 三个人出不同 没人赢，要想有人赢，必须两个相同，第三个人出能赢的
             reset();
             return ("", false);
         }
 
-        if (xiaomi == xiaoming) {
+        if (act_xiaomi == act_xiaoming) {
         // 如果 小米小明 一样， 小刚赢了他俩，小刚赢
-            if (winCheck(xiaogang, xiaomi)) {
+            if (winCheck(act_xiaogang, act_xiaomi)) {
                 return ("小刚", true);
             }else{
                 reset();
                 return ("", false);
             }
         }
-        if (xiaomi == xiaogang) {
+        if (act_xiaomi == act_xiaogang) {
         // 如果 小米小刚 一样， 小明赢了他俩，小明赢
-            if (winCheck(xiaoming, xiaomi)) {
+            if (winCheck(act_xiaoming, act_xiaomi)) {
                 return ("小明", true);
             }else{
                 reset();
                 return ("", false);
             }
         } 
-        if (xiaoming == xiaogang) {
+        if (act_xiaoming == act_xiaogang) {
         // 如果 小明小刚 一样， 小米赢了他俩，小米赢
-            if (winCheck(xiaomi, xiaoming)) {
+            if (winCheck(act_xiaomi, act_xiaoming)) {
                 return ("小米", true);
             }else{
                 reset();
