@@ -1,3 +1,0 @@
-# cdl
-
-Solidity notes
