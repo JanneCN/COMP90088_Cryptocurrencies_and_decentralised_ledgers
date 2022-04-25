@@ -5,6 +5,15 @@ pragma solidity ^0.4.21;
 // The three are competing for the winner
 // The source code is from https://wupeaking.github.io/learn/smartcode/
 contract Winner {
+    // variables in Solidity
+    //    1. global var: used in the whole blockchain. One can use it without predefined
+    //      e.g. msg.sender in this code (I supposed it has been predefined by the ETH)
+    //    2. state var: defined in the contract
+    //      e.g. _mapActions, _AllAccounts, ... act_xiaogang, 
+    //           they work inside this Winner contract
+    //    3. local var: defined in a function. Usually start with a underscore "_", not mandatory
+    //      e.g. a and b in function winCheck (a b not start with _ but it's ok)
+             
     // Mapping in Solidity acts like a hash table or dictionary in any other language. 
     // These are used to store the data in the form of key-value pairs, 
     // the key can be any of the built-in data types but reference types are not allowed 
