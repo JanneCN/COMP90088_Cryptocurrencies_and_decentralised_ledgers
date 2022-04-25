@@ -4,6 +4,8 @@ pragma solidity ^0.4.21;
 // xiaomi xiaoming xiaogang are three Designated players (Hard coded)
 // The three are competing for the winner
 // The source code is from https://wupeaking.github.io/learn/smartcode/
+
+// one file can contain several contracts 
 contract Winner {
     // variables in Solidity
     //    1. global var: used in the whole blockchain. One can use it without predefined
@@ -42,9 +44,9 @@ contract Winner {
         _mapActions["hammer"] = 2;
         _mapActions["cloth"] = 3;
         
-        addr_xiaomi   = 0x763418009b636593e86256ffa32bef1b0218a1e1
-        addr_xiaoming = 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c
-        addr_xiaogang = 0x583031d1113ad414f02576bd6afabfb302140225
+        addr_xiaomi   = 0x763418009b636593e86256ffa32bef1b0218a1e1;
+        addr_xiaoming = 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c;
+        addr_xiaogang = 0x583031d1113ad414f02576bd6afabfb302140225;
         // this is an exclusive game, only xiaomi xiaoming xiaogang can involve in
         _AllAccounts[addr_xiaomi] = true;  
         _AllAccounts[addr_xiaoming] = true;
