@@ -1,11 +1,12 @@
-pragma solidity ^0.4.21;
+// pragma solidity ^0.4.21;
+pragma solidity 0.8.13;
 // Problem Context
 // This is a scissors hammer cloth game for three players
 // xiaomi xiaoming xiaogang are three Designated players (Hard coded)
 // The three are competing for the winner
 // The source code is from https://wupeaking.github.io/learn/smartcode/
 
-// one file can contain several contracts 
+// One file can contain multiple contracts 
 contract Winner {
     // variables in Solidity
     //    1. global var: used in the whole blockchain. One can use it without predefined
@@ -67,7 +68,8 @@ contract Winner {
     
     // 设置执行动作  要求只能是scissors hammer cloth 
     // 并且要求只能是上述要求的三个以太坊地址
-    function setAction( string action) public  returns (bool) {
+    // memory: storage local variable
+    function setAction( string memory action) public  returns (bool) {
         if (_mapActions[action] == 0 ) {
             // 当前玩家没有动作，游戏结束
             // 只有所有玩家都有动作才可以进行之后的比较
@@ -101,7 +103,7 @@ contract Winner {
     }
     
     // The winner is one of xiaomi xiaoming xiaogang
-    function whoIsWinner() public returns (string, bool) {
+    function whoIsWinner() public returns (string memory, bool) {
         if (
             // _AccountsActions[0x763418009b636593e86256ffa32bef1b0218a1e1] == 0 ||
             // _AccountsActions[0x14723a09acff6d2a60dcdf7aa4aff308fddc160c] == 0 ||
@@ -127,7 +129,7 @@ contract Winner {
         if (act_xiaomi == act_xiaoming) {
         // 如果 小米小明 一样， 小刚赢了他俩，小刚赢
             if (winCheck(act_xiaogang, act_xiaomi)) {
-                return ("小刚", true);
+                return ("gang", true);
             }else{
                 reset();
                 return ("", false);
@@ -136,7 +138,7 @@ contract Winner {
         if (act_xiaomi == act_xiaogang) {
         // 如果 小米小刚 一样， 小明赢了他俩，小明赢
             if (winCheck(act_xiaoming, act_xiaomi)) {
-                return ("小明", true);
+                return ("ming", true);
             }else{
                 reset();
                 return ("", false);
@@ -145,7 +147,7 @@ contract Winner {
         if (act_xiaoming == act_xiaogang) {
         // 如果 小明小刚 一样， 小米赢了他俩，小米赢
             if (winCheck(act_xiaomi, act_xiaoming)) {
-                return ("小米", true);
+                return ("mi", true);
             }else{
                 reset();
                 return ("", false);
