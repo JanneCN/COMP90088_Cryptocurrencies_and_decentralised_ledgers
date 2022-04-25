@@ -12,7 +12,7 @@ contract Winner {
     //      e.g. _mapActions, _AllAccounts, ... act_xiaogang, 
     //           they work inside this Winner contract
     //    3. local var: defined in a function. Usually start with a underscore "_", not mandatory
-    //      e.g. a and b in function winCheck (a b not start with _ but it's ok)
+    //      e.g. a and b in function winCheck (a b not start with _ but it's not mandatory)
              
     // Mapping in Solidity acts like a hash table or dictionary in any other language. 
     // These are used to store the data in the form of key-value pairs, 
